@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "db-data-dictionary"
+version = "1.0"
+description = "Geração automática de um dicionário de dados utilizando python. Os dados são extraídos do banco de dados informado, feito por schema."
+authors = ["alice7lima <alice7252011@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.12"
+pandas = "^2.2.1"
+psycopg2 = "^2.9.9"
+python-decouple = "^3.8"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

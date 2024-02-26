@@ -1,0 +1,9 @@
+.env
+
+teste.*
+
+*pycache*
+
+*.venv
+
+.python-version
