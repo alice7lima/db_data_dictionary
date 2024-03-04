@@ -7,3 +7,8 @@ teste.*
 *.venv
 
 .python-version
+
+poetry*
+pyproject*
+
+test_output.xlsx
