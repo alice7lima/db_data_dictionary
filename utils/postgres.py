@@ -1,5 +1,6 @@
 from decouple import config
 import psycopg2
+import pandas as pd
 
 DB_HOST = config('DB_HOST')
 DB_NAME = config('DB_NAME')
@@ -103,5 +104,44 @@ def get_columns_info(table_name, schema):
 
     return cols_infos
 
-def build_data_dictionary():
-    pass
+def build_data_dictionary(schema):
+    
+    cur = conn.cursor()
+
+    tables_comments = {}
+    tables = get_tables_names(schema=schema)
+
+
+    for table in tables:
+        tables_comments[table] = get_table_comment(schema=schema, table_name=table)
+
+    query = """
+    WITH descricoes as (
+    SELECT *  FROM pg_catalog.pg_description d
+    INNER JOIN pg_catalog.pg_class pgc on pgc."oid" = d.objoid 
+    WHERE relname = %s AND relnamespace = (
+    SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = %s)
+    )
+
+    SELECT c.column_name, c.is_nullable,c.data_type,t2.description FROM information_schema.columns c
+    LEFT JOIN descricoes t2 on t2.objsubid = c.ordinal_position 
+    WHERE c.table_name  = %s
+    ORDER BY c.ordinal_position 
+    """
+    df = pd.DataFrame(columns=['Tabela', 'Descrição', 'Coluna', 'Tipo', 'Null','Comentário'])
+
+    for table in tables_comments.keys():
+        cur.execute(query, (table, schema, table))
+        colunas = cur.fetchall()
+        for idx, c in enumerate(colunas):
+            registro = {'Tabela': table, 'Descrição': tables_comments[table], 'Coluna': c[0], 
+                     'Tipo': c[2], 'Null': c[1], 'Comentário': c[3]}
+            
+            if idx != 0:
+                registro['Descrição'] = ''
+            
+
+            df = pd.concat([df, pd.DataFrame([registro])], ignore_index=True)
+
+        
+    return df
