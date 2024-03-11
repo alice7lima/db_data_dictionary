@@ -28,6 +28,7 @@ pyenv local 3.12
 
 2. Configure o ambiente
 
+2.1 Ambiente virtual e dependências do projeto
 ```
 python -m venv .venv
 source .venv/bin/activate
@@ -35,6 +36,15 @@ source .venv/bin/activate
 #instale as dependências
 pip install -r requirements.txt
 ```
+
+2.2 Configurando as variáveis de ambiente, primeiro, crie um arquivo .env declarando as variáveis de conexão:
+
+```
+DB_HOST = <seu_host>
+DB_NAME = <nome_banco>
+DB_USER = <nome_usuario>
+DB_PASSWORD = <senha_usuario>
+``` 
 
 3. Execute o script principal:
 
