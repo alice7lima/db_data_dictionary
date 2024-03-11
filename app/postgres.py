@@ -8,13 +8,21 @@ DB_USER = config('DB_USER')
 DB_PASSWORD = config('DB_PASSWORD')
 
 class PostgresDict():
-    def __init__(self,schema):
+    def __init__(self, schema):
+        self.conn = None
         self.schema = schema
-        self.conn = psycopg2.connect(
+        
+    def create_connection(self):
+        try:
+            self.conn = psycopg2.connect(
                 host=DB_HOST,
                 database=DB_NAME,
                 user=DB_USER,
                 password=DB_PASSWORD)
+        except psycopg2.OperationalError as e:
+            print('Não foi possível estabelecer conexão com o banco. Verifique se as variáveis de conexão estão corretas.')
+            exit()
+            
 
     def get_tables_names(self):
 
