@@ -20,7 +20,7 @@ if opts['--sgbd'] == 'postgres':
 
     dicionario = builder.pg_data_dictionary()
 
-    dicionario.to_excel('test_output.xlsx', index=False)
+    dicionario.to_excel(f'sc_{opts['--schema']}_dicionario.xlsx', index=False)
 
 else:
     print("Ainda não há implementação para este SGBD. Por favor aguarde.")
