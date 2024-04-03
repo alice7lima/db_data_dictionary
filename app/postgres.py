@@ -98,10 +98,11 @@ class PostgresDict():
         SELECT c.column_name, c.is_nullable,c.data_type,t2.description FROM information_schema.columns c
         LEFT JOIN descricoes t2 on t2.objsubid = c.ordinal_position 
         WHERE c.table_name  = %s
+        AND c.table_schema = %s
         ORDER BY c.ordinal_position 
         """
 
-        cur.execute(query, (table_name, self.schema, table_name))
+        cur.execute(query, (table_name, self.schema, table_name, self.schema))
         cols_infos = cur.fetchall()
 
         cols_infos = [list(register) for register in cols_infos]
