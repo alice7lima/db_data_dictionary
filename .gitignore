@@ -12,3 +12,5 @@ poetry*
 pyproject*
 
 test_output.xlsx
+sc_*
+sc_*
